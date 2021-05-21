@@ -135,3 +135,80 @@ func BubbleSort(arr []int, asc bool) {
 		length--
 	}
 }
+
+//time complexity O(N)~O(N^2)
+//space complexity O(1)
+func InsertSort(arr []int, asc bool) {
+	if asc {
+		insertSortAsc(arr)
+	} else {
+		insertSortDec(arr)
+	}
+}
+
+func insertSortAsc(arr []int) {
+	for i := 0; i < len(arr)-1; i++ {
+		count := i + 1
+		for count > 0 {
+			if arr[count] < arr[count-1] {
+				Swap(arr, count, count-1)
+				count--
+			} else {
+				break
+			}
+		}
+	}
+}
+
+func insertSortDec(arr []int) {
+	for i := 0; i < len(arr)-1; i++ {
+		count := i + 1
+		for count > 0 {
+			if arr[count] > arr[count-1] {
+				Swap(arr, count, count-1)
+				count--
+			} else {
+				break
+			}
+		}
+	}
+}
+
+//time complexity O(N+N*(logN-logM))
+//space complexity O(max - min ), max and min are the number in the array
+func BucketSort(arr []int, asc bool, bucketSize int) {
+	if bucketSize < 1 {
+		bucketSize = 10
+	}
+	max := arr[0]
+	min := arr[0]
+	for _, v := range arr {
+		if v > max {
+			max = v
+		}
+		if v < min {
+			min = v
+		}
+	}
+	bucketCount := (max-min)/bucketSize + 1
+	buckets := make([][]int, bucketCount)
+	for _, v := range arr {
+		index := (v - min) / bucketSize
+		buckets[index] = append(buckets[index], v)
+	}
+	for _, bucket := range buckets {
+		QuickSort(bucket, asc)
+	}
+	arr = append(arr[:0])
+	if asc {
+		for _, bucket := range buckets {
+			arr = append(arr, bucket...)
+		}
+	} else {
+		index := len(buckets) - 1
+		for index >= 0 {
+			arr = append(arr, buckets[index]...)
+			index--
+		}
+	}
+}

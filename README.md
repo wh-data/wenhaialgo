@@ -6,5 +6,7 @@
     - bubble sort
     - quick aort
     - heap sort
+    - insert sort
+    - bucket sort
   - find top two number
   - find median numner

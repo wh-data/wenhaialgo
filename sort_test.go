@@ -36,3 +36,20 @@ func TestBubbleSortAsc(t *testing.T) {
 	BubbleSort(arr, true)
 	fmt.Println(arr)
 }
+
+func TestInsertSort(t *testing.T) {
+	arr := []int{8, 9, 5, 2, 1, 4, 7}
+	InsertSort(arr, true)
+	fmt.Println(arr)
+	InsertSort(arr, false)
+	fmt.Println(arr)
+}
+
+func TestBucketSort(t *testing.T) {
+	arr := []int{8, 9, 5, 2, 1, 4, 7}
+	BucketSort(arr, false, 3)
+	fmt.Println(arr)
+	arr = []int{8, 9, 5, 2, 1, 4, 7}
+	BucketSort(arr, true, 3)
+	fmt.Println(arr)
+}
