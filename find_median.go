@@ -37,7 +37,7 @@ func FindMedianByHeap(array []int) (median float64){
 	for i := loop; i < len(array); i++{
 		if array[i] > myheap.Elements[0]{
 			myheap.Elements[0] = array[i]
-			myheap.MinHeapBuild()
+			myheap.MinHeapAdjustRoot()
 		}
 	}
 	if length%2==0{
