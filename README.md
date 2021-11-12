@@ -9,4 +9,5 @@
     - insert sort
     - bucket sort
   - find top two number
-  - find median numner
+  - find median number
+  - de-duplicate elements in array
