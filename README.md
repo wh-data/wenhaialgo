@@ -11,3 +11,4 @@
   - find top two number
   - find median number
   - de-duplicate elements in array
+  - reverse int, string
