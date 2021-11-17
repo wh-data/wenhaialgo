@@ -1,6 +1,8 @@
 package wenhaialgo
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //time complexity O(nlogn)
 //space complexity O(1), in Swap need create a new number
@@ -16,6 +18,25 @@ func HeapSort(arr []int, asc bool) {
 		for i := 0; i < len(arr); i++ {
 			lastParent := (len(arr)+i)/2 - 1
 			shiftUpBigVal(i, lastParent, arr)
+		}
+	}
+}
+
+func HeapSortV2(arr []int, asc bool) {
+	length := len(arr)
+	if asc {
+		for i := 0; i < len(arr); i++ {
+			lastParent := length/2 - 1
+			shiftUpBigValV2(lastParent, length, arr)
+			arr[0], arr[length-1] = arr[length-1], arr[0] //move biggest num to last
+			length--
+		}
+	} else {
+		for i := 0; i < len(arr); i++ {
+			lastParent := length/2 - 1
+			shiftUpSmallValV2(lastParent, length, arr)
+			arr[0], arr[length-1] = arr[length-1], arr[0] //move smallest num to last
+			length--
 		}
 	}
 }

@@ -12,6 +12,12 @@ func TestSortByHeap(t *testing.T) {
 	arr = []int{8, 9, 5, 2, 1, 4, 7}
 	HeapSort(arr, false)
 	fmt.Println(arr)
+	arr = []int{8, 9, 5, 2, 1, 4, 7}
+	HeapSortV2(arr, true)
+	fmt.Println(arr)
+	arr = []int{8, 9, 5, 2, 1, 4, 7}
+	HeapSortV2(arr, false)
+	fmt.Println(arr)
 }
 
 func TestQuickSort(t *testing.T) {

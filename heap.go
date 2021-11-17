@@ -210,6 +210,27 @@ func shiftUpBigVal(root, parent int, array []int) {
 	parent--
 	shiftUpBigVal(root, parent, array)
 }
+func shiftUpBigValV2(parent, length int, array []int) {
+	if parent < 0 {
+		return
+	}
+	leftKid := 2*parent + 1
+	rightKid := 2*parent + 2
+	//shift up left
+	if leftKid < length {
+		if array[leftKid] > array[parent] {
+			array[parent], array[leftKid] = array[leftKid], array[parent]
+		}
+	}
+	//shift up right
+	if rightKid < length {
+		if array[rightKid] > array[parent] {
+			array[parent], array[rightKid] = array[rightKid], array[parent]
+		}
+	}
+	parent--
+	shiftUpBigValV2(parent, length, array)
+}
 
 func shiftUpSmallVal(root, parent int, array []int) {
 	if parent < root {
@@ -229,4 +250,26 @@ func shiftUpSmallVal(root, parent int, array []int) {
 	}
 	parent--
 	shiftUpSmallVal(root, parent, array)
+}
+
+func shiftUpSmallValV2(parent, length int, array []int) {
+	if parent < 0 {
+		return
+	}
+	leftKid := 2*parent + 1
+	rightKid := 2*parent + 2
+	//shift up left
+	if leftKid < length {
+		if array[leftKid] < array[parent] {
+			array[parent], array[leftKid] = array[leftKid], array[parent]
+		}
+	}
+	//shift up right
+	if rightKid < length {
+		if array[rightKid] < array[parent] {
+			array[parent], array[rightKid] = array[rightKid], array[parent]
+		}
+	}
+	parent--
+	shiftUpSmallValV2(parent, length, array)
 }
