@@ -1,10 +1,10 @@
-package wenhaialgo
+package back_track
 
 import "testing"
 
 func TestQueensSolutions(t *testing.T) {
 	var (
-		isPrintIncomplete = true
+		isPrintIncomplete = false
 	)
 	QueensSolutions(4, isPrintIncomplete)
 }
