@@ -6,6 +6,6 @@ import (
 )
 
 func TestReverse(t *testing.T) {
-	x := -1234
+	x := -12340
 	fmt.Println(ReverseIntByModulor(x))
 }
