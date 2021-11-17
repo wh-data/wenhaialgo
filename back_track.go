@@ -19,6 +19,11 @@ import "fmt"
 //版权声明：本文为CSDN博主「JarvisChu」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 //原文链接：https://blog.csdn.net/JarvisChu/article/details/16067319
 
+//回溯问题关键点：
+//1.解决路径问题很有效
+//2.用递归可以使代码比较好理解，递归的层数是路径的层数
+//3.回溯的的recover很重要，每一次路径选择完成后需要回复上前一状态，这样才能做到回溯
+
 func QueensSolutions(max int, isPrintIncomplete bool) int {
 	GoodSolutions, IncompleteSolutions, curI := new(int), new(int), new(int)
 	*GoodSolutions = 0
