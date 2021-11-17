@@ -7,12 +7,10 @@ import (
 
 func TestSortByHeap(t *testing.T) {
 	arr := []int{8, 9, 5, 2, 1, 4, 7}
-	HeapSort(arr, false)
-	fmt.Println(arr)
 	HeapSort(arr, true)
 	fmt.Println(arr)
 	arr = []int{8, 9, 5, 2, 1, 4, 7}
-	HeapSort(arr, true)
+	HeapSort(arr, false)
 	fmt.Println(arr)
 }
 
@@ -34,6 +32,12 @@ func TestQuickSortDivide(t *testing.T) {
 func TestBubbleSortAsc(t *testing.T) {
 	arr := []int{8, 9, 5, 2, 1, 4, 7}
 	BubbleSort(arr, true)
+	fmt.Println(arr)
+	arr = []int{8, 9, 5, 2, 1, 4, 7}
+	BubbleSortV2(arr, true)
+	fmt.Println(arr)
+	arr = []int{8, 9, 5, 2, 1, 4, 7}
+	GeneralSort(arr, true)
 	fmt.Println(arr)
 }
 

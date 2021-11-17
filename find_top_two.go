@@ -1,6 +1,7 @@
 package wenhaialgo
 
 //using one for loop
+//without changing ori index
 func FindTopTwoMinimumNumber(array []int) (minimum, second, indexm, indexs int) {
 	minimum = array[0]
 	second = array[1]
@@ -21,6 +22,9 @@ func FindTopTwoMinimumNumber(array []int) (minimum, second, indexm, indexs int) 
 }
 
 func FindTopTwoMaxNumber(array []int) (max, second, indexm, indexs int) {
+	if len(array) < 2 {
+		return
+	}
 	max = array[0]
 	second = array[1]
 	indexm = 0
@@ -37,4 +41,13 @@ func FindTopTwoMaxNumber(array []int) (max, second, indexm, indexs int) {
 		}
 	}
 	return
+}
+
+func FindMaxNumberByHeap(array []int) (max int) {
+	if len(array) < 0 {
+		return 0
+	}
+	lastParent := len(array)/2 - 1
+	shiftUpBigVal(0, lastParent, array)
+	return array[0]
 }

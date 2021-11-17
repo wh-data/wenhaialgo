@@ -186,3 +186,47 @@ func (h *MyHeap) MaxHeapAdjustRoot() {
 	h.MaxHeapShiftDown(0)
 	return
 }
+
+//more general shift up
+//start from the last parent node:len(array)/2 - 1
+func shiftUpBigVal(root, parent int, array []int) {
+	if parent < root {
+		return
+	}
+	leftKid := 2*parent + (1 - root)
+	rightKid := 2*parent + (2 - root)
+	//shift up left
+	if leftKid < len(array) {
+		if array[leftKid] > array[parent] {
+			array[parent], array[leftKid] = array[leftKid], array[parent]
+		}
+	}
+	//shift up right
+	if rightKid < len(array) {
+		if array[rightKid] > array[parent] {
+			array[parent], array[rightKid] = array[rightKid], array[parent]
+		}
+	}
+	parent--
+	shiftUpBigVal(root, parent, array)
+}
+
+func shiftUpSmallVal(root, parent int, array []int) {
+	if parent < root {
+		return
+	}
+	leftKid := 2*parent + (1 - root)
+	rightKid := 2*parent + (2 - root)
+	if leftKid < len(array) {
+		if array[leftKid] < array[parent] {
+			array[parent], array[leftKid] = array[leftKid], array[parent]
+		}
+	}
+	if rightKid < len(array) {
+		if array[rightKid] < array[parent] {
+			array[parent], array[rightKid] = array[rightKid], array[parent]
+		}
+	}
+	parent--
+	shiftUpSmallVal(root, parent, array)
+}
