@@ -28,7 +28,7 @@ func QueensSolutions(max int, isPrintIncomplete bool) int {
 	GoodSolutions, IncompleteSolutions, curI := new(int), new(int), new(int)
 	*GoodSolutions = 0
 	*IncompleteSolutions = 0
-	*curI = 0
+	*curI = -1
 	board := initBoard(max)
 	queen(1, GoodSolutions, IncompleteSolutions, curI, board, isPrintIncomplete)
 	fmt.Printf("total goold solutions: %d\n", *GoodSolutions)
@@ -56,9 +56,9 @@ func queen(num int, goodSolutions, incompleteSolutions, curI *int, board [][]int
 		printSolution(goodSolutions, board, true)
 		return
 	}
-	for i := 0; i < max; i++ {
+	for i := *curI + 1; i < max; i++ {
 		for j := 0; j < max; j++ {
-			if feasible(i, j, board, curI) {
+			if feasible(i, j, board) {
 				board[i][j] = 1
 				*curI = i
 				queen(num+1, goodSolutions, incompleteSolutions, curI, board, isPrintIncomplete)
@@ -89,12 +89,8 @@ func printSolution(solutions *int, board [][]int, isGoodSolution bool) {
 	fmt.Println("================")
 }
 
-func feasible(i, j int, board [][]int, curI *int) bool {
+func feasible(i, j int, board [][]int) bool {
 	max := len(board)
-	//to avoid repeat, only feasible for below slot
-	if i < *curI {
-		return false
-	}
 	//row and col no any queen
 	for k := 0; k < max; k++ {
 		if board[k][j] != 0 || board[i][k] != 0 {

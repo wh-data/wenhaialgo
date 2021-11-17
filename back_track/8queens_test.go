@@ -6,5 +6,5 @@ func TestQueensSolutions(t *testing.T) {
 	var (
 		isPrintIncomplete = false
 	)
-	QueensSolutions(4, isPrintIncomplete)
+	QueensSolutions(8, isPrintIncomplete)
 }
