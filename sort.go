@@ -204,6 +204,48 @@ func BubbleSortV2(arr []int, asc bool) {
 	//fmt.Println(count)
 }
 
+func BubbleSortFloat32(arr []float32, asc bool) {
+	//count := 0 //for checking time complexity
+	if len(arr) < 2 {
+		return
+	}
+	length := len(arr)
+	for length > 0 {
+		i := 0
+		j := 1
+		isChanged := false
+		for j < length {
+			//count += 1
+			if asc {
+				if arr[j] < arr[i] {
+					arr[i], arr[j] = arr[j], arr[i]
+					i = j
+					j++
+					isChanged = true
+				} else {
+					i++
+					j++
+				}
+			} else {
+				if arr[j] > arr[i] {
+					arr[i], arr[j] = arr[j], arr[i]
+					i = j
+					j++
+					isChanged = true
+				} else {
+					i++
+					j++
+				}
+			}
+		}
+		length--
+		if !isChanged {
+			break
+		}
+	}
+	//fmt.Println(count)
+}
+
 //time complexity: always O(n(n+1)/2)
 func GeneralSort(arr []int, asc bool) {
 	count := 0 //for checking time complexity
