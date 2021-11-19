@@ -1,10 +1,12 @@
 package wenhaialgo
 
+import "math"
+
 //using one for loop
 //without changing ori index
 func FindTopTwoMinimumNumber(array []int) (minimum, second, indexm, indexs int) {
 	minimum = array[0]
-	second = array[1]
+	second = math.MaxInt32
 	indexm = 0
 	indexs = 1
 	for i := 1; i < len(array); i++ {
@@ -26,7 +28,7 @@ func FindTopTwoMaxNumber(array []int) (max, second, indexm, indexs int) {
 		return
 	}
 	max = array[0]
-	second = array[1]
+	second = math.MinInt32
 	indexm = 0
 	indexs = 1
 	for i := 1; i < len(array); i++ {
