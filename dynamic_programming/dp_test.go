@@ -13,7 +13,7 @@ func TestFragGoStair(t *testing.T) {
 	fmt.Println(FragGoStairPossibility(4))
 }
 
-func TestS(Z *testing.T) {
+func TestBackpack(Z *testing.T) {
 	w := []int{1, 2, 5, 6, 7}
 	v := []int{1, 6, 18, 22, 28}
 	art := []Article{
@@ -46,7 +46,7 @@ func TestS(Z *testing.T) {
 	fmt.Println("after back tracking ", bp)
 }
 
-func TestBackpack(Z *testing.T) {
+func TestBackpackDP(Z *testing.T) {
 	wt := []int{1, 2, 5, 6, 7}
 	val := []int{1, 6, 18, 22, 28}
 	c := 11
