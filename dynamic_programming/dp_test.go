@@ -39,10 +39,11 @@ func TestS(Z *testing.T) {
 		},
 	}
 	c := 11
+	bp := &Backpack{}
 	fmt.Println(BackpackIssueByGreedyAlgo(c, w, v))
-	fmt.Println("before algo ", resWeightList, resValueList, resTotalWeight, resTotalValue)
-	BackpackIssueByBackTrackAlgo(0, c, art)
-	fmt.Println("after back tracking ", resWeightList, resValueList, resTotalWeight, resTotalValue)
+	fmt.Println("before algo ", bp)
+	BackpackIssueByBackTrackAlgo(0, c, art, bp)
+	fmt.Println("after back tracking ", bp)
 }
 
 func TestBackpack(Z *testing.T) {

@@ -84,49 +84,56 @@ func BackpackIssueByGreedyAlgo(capacity int, weight, value []int) (chosenWeight,
 }
 
 //back tracking
-var resTotalWeight, resTotalValue, curTotalWeight, curTotalValue int
-var resWeightList = make([]int, 0)
-var resValueList = make([]int, 0)
-var curWeightList = make([]int, 0)
-var curValueList = make([]int, 0)
+
+type Backpack struct {
+	ResTotalWeight int
+	ResTotalValue  int
+	ResWeightList  []int
+	ResValueList   []int
+	CurTotalWeight int
+	CurTotalValue  int
+	CurWeightList  []int
+	CurValueList   []int
+}
+
 var checkedMap = make(map[int]bool, 0)
 
 var count int
 
-func BackpackIssueByBackTrackAlgo(articleIndex, capacity int, articles []Article) {
+func BackpackIssueByBackTrackAlgo(articleIndex, capacity int, articles []Article, bp *Backpack) {
 	if articleIndex >= len(articles) {
-		if curTotalValue > resTotalValue {
-			resTotalValue = curTotalValue
-			resTotalWeight = curTotalWeight
-			resWeightList = curWeightList
-			resValueList = curValueList
+		if bp.CurTotalValue > bp.ResTotalValue {
+			bp.ResTotalValue = bp.CurTotalValue
+			bp.ResTotalWeight = bp.CurTotalWeight
+			bp.ResWeightList = bp.CurWeightList
+			bp.ResValueList = bp.CurValueList
 		}
 		fmt.Println("debugg: added all")
 		return
 	}
 	for i, art := range articles {
-		if !checkedMap[i] && curTotalWeight+art.Weight <= capacity {
-			curTotalWeight += art.Weight
-			curTotalValue += art.Value
-			curWeightList = append(curWeightList, art.Weight)
-			curValueList = append(curValueList, art.Value)
+		if !checkedMap[i] && bp.CurTotalWeight+art.Weight <= capacity {
+			bp.CurTotalWeight += art.Weight
+			bp.CurTotalValue += art.Value
+			bp.CurWeightList = append(bp.CurWeightList, art.Weight)
+			bp.CurValueList = append(bp.CurValueList, art.Value)
 			checkedMap[i] = true
 			//cal optimised res
-			if curTotalValue > resTotalValue {
-				resTotalValue = curTotalValue
-				resTotalWeight = curTotalWeight
+			if bp.CurTotalValue > bp.ResTotalValue {
+				bp.ResTotalValue = bp.CurTotalValue
+				bp.ResTotalWeight = bp.CurTotalWeight
 				//have to do deep copy, otherwise res will updated when cur updated
-				resWeightList = make([]int, len(curWeightList))
-				resValueList = make([]int, len(curValueList))
-				copy(resWeightList, curWeightList)
-				copy(resValueList, curValueList)
+				bp.ResWeightList = make([]int, len(bp.CurWeightList))
+				bp.ResValueList = make([]int, len(bp.CurValueList))
+				copy(bp.ResWeightList, bp.CurWeightList)
+				copy(bp.ResValueList, bp.CurValueList)
 			}
-			BackpackIssueByBackTrackAlgo(articleIndex+1, capacity, articles)
+			BackpackIssueByBackTrackAlgo(articleIndex+1, capacity, articles, bp)
 			//roll back to upper level
-			curTotalWeight -= art.Weight
-			curTotalValue -= art.Value
-			curWeightList = curWeightList[:len(curWeightList)-1]
-			curValueList = curValueList[:len(curValueList)-1]
+			bp.CurTotalWeight -= art.Weight
+			bp.CurTotalValue -= art.Value
+			bp.CurWeightList = bp.CurWeightList[:len(bp.CurWeightList)-1]
+			bp.CurValueList = bp.CurValueList[:len(bp.CurValueList)-1]
 			checkedMap[i] = false
 		}
 	}
