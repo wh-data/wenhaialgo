@@ -6,7 +6,7 @@ import "math"
 //without changing ori index
 func FindTopTwoMinimumNumber(array []int) (minimum, second, indexm, indexs int) {
 	minimum = array[0]
-	second = math.MaxInt32
+	second = math.MaxInt32 //have to use max, to make sure "else if" logic have to triggered
 	indexm = 0
 	indexs = 1
 	for i := 1; i < len(array); i++ {
@@ -28,7 +28,7 @@ func FindTopTwoMaxNumber(array []int) (max, second, indexm, indexs int) {
 		return
 	}
 	max = array[0]
-	second = math.MinInt32
+	second = math.MinInt32 //have to use min, to make sure "else if" logic have to triggered
 	indexm = 0
 	indexs = 1
 	for i := 1; i < len(array); i++ {
