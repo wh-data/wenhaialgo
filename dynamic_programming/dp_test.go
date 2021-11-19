@@ -44,3 +44,10 @@ func TestS(Z *testing.T) {
 	BackpackIssueByBackTrackAlgo(0, c, art)
 	fmt.Println("after back tracking ", resWeightList, resValueList, resTotalWeight, resTotalValue)
 }
+
+func TestBackpack(Z *testing.T) {
+	wt := []int{1, 2, 5, 6, 7}
+	val := []int{1, 6, 18, 22, 28}
+	c := 11
+	BackpackIssueByDP(wt, val, c)
+}

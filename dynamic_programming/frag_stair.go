@@ -2,6 +2,7 @@ package dynamic_programming
 
 import (
 	"fmt"
+	"math"
 	"sort"
 )
 
@@ -84,12 +85,14 @@ func BackpackIssueByGreedyAlgo(capacity int, weight, value []int) (chosenWeight,
 
 //back tracking
 var resTotalWeight, resTotalValue, curTotalWeight, curTotalValue int
-var resWeightList, resValueList, curWeightList, curValueList []int
+var resWeightList = make([]int, 0)
+var resValueList = make([]int, 0)
+var curWeightList = make([]int, 0)
+var curValueList = make([]int, 0)
 var checkedMap = make(map[int]bool, 0)
 
 var count int
 
-//todo: fix bug
 func BackpackIssueByBackTrackAlgo(articleIndex, capacity int, articles []Article) {
 	if articleIndex >= len(articles) {
 		if curTotalValue > resTotalValue {
@@ -102,53 +105,37 @@ func BackpackIssueByBackTrackAlgo(articleIndex, capacity int, articles []Article
 		return
 	}
 	for i, art := range articles {
-		//do not repeat same index in each path
-		if checkedMap[i] {
-			continue
-		}
-		curTotalWeight += art.Weight
-		curTotalValue += art.Value
-		curWeightList = append(curWeightList, art.Weight)
-		curValueList = append(curValueList, art.Value)
-		checkedMap[i] = true
-		//exceed capacity, return
-		if curTotalWeight > capacity {
-			//check whether the cur value is the optimised one
-			if curTotalValue-art.Value > resTotalValue {
-				resTotalValue = curTotalValue - art.Weight
-				resTotalWeight = curTotalWeight - art.Value
-				resWeightList = curWeightList[:len(curWeightList)-1]
-				resValueList = curValueList[:len(curValueList)-1]
-				fmt.Println("debugg: resWeightList", resWeightList, "resValueList", resValueList)
+		if !checkedMap[i] && curTotalWeight+art.Weight <= capacity {
+			curTotalWeight += art.Weight
+			curTotalValue += art.Value
+			curWeightList = append(curWeightList, art.Weight)
+			curValueList = append(curValueList, art.Value)
+			checkedMap[i] = true
+			//cal optimised res
+			if curTotalValue > resTotalValue {
+				resTotalValue = curTotalValue
+				resTotalWeight = curTotalWeight
+				//have to do deep copy, otherwise res will updated when cur updated
+				resWeightList = make([]int, len(curWeightList))
+				resValueList = make([]int, len(curValueList))
+				copy(resWeightList, curWeightList)
+				copy(resValueList, curValueList)
 			}
-			//roll back data, but still same level
+			BackpackIssueByBackTrackAlgo(articleIndex+1, capacity, articles)
+			//roll back to upper level
 			curTotalWeight -= art.Weight
 			curTotalValue -= art.Value
 			curWeightList = curWeightList[:len(curWeightList)-1]
 			curValueList = curValueList[:len(curValueList)-1]
 			checkedMap[i] = false
-			//if all ele are checked, return to upper level
-			if i == len(articles) {
-				articleIndex--
-				return
-			}
-			continue
 		}
-		BackpackIssueByBackTrackAlgo(articleIndex+1, capacity, articles)
-		//roll back to upper level
-		curTotalWeight -= art.Weight
-		curTotalValue -= art.Value
-		curWeightList = curWeightList[:len(curWeightList)-1]
-		curValueList = curValueList[:len(curValueList)-1]
-		checkedMap[i] = false
-		articleIndex--
 	}
 }
 
 //dynamic programming
 //refer https://www.jianshu.com/p/c289cd8ae0ed
 //todo: check the algo
-func BackpackIssueByDP(nums [][]int, total int) int {
+func BackpackIssueByDPV2(nums [][]int, total int) int {
 	dp := make([]int, total+1)
 	for i := 0; i < len(nums); i++ {
 		for j := nums[i][0]; j <= total; j++ {
@@ -158,4 +145,28 @@ func BackpackIssueByDP(nums [][]int, total int) int {
 		}
 	}
 	return dp[total]
+}
+
+//todo: bug fix
+func BackpackIssueByDP(wt, val []int, size int) int {
+	dp := make([][]int, len(wt))
+	for i := range dp {
+		dp[i] = make([]int, size)
+	}
+	for i := 0; i < len(wt); i++ {
+		dp[i][0] = 0
+	}
+	for j := 0; j < size; j++ {
+		dp[0][j] = 0
+	}
+	for i := 1; i <= len(wt); i++ {
+		for j := 1; j <= size; j++ {
+			if wt[i] > size {
+				dp[i][size] = dp[i-1][size]
+			} else {
+				dp[i][size] = int(math.Max(float64(dp[i-1][size]), float64(dp[i-1][size-wt[i]]+val[i])))
+			}
+		}
+	}
+	return dp[len(wt)][size]
 }
