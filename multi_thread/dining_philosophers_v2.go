@@ -14,7 +14,7 @@ func The_dining_philosophers_v2(hungryPhis []int) {
 	startTime := time.Now()
 	wg := &sync.WaitGroup{}
 	wg.Add(len(hungryPhis))
-	for p := range hungryPhis {
+	for _, p := range hungryPhis {
 		go diningV2(wg, p)
 	}
 	wg.Wait()

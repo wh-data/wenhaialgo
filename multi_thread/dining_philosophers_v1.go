@@ -13,7 +13,7 @@ func The_dining_philosophers_v1(hungryPhis []int) {
 	startTime := time.Now()
 	wg := &sync.WaitGroup{}
 	wg.Add(len(hungryPhis))
-	for p := range hungryPhis {
+	for _, p := range hungryPhis {
 		go dining(wg, p)
 	}
 	wg.Wait()
@@ -43,6 +43,7 @@ func pickLeftFork(phi int) (int, bool) {
 		lFork = phi - 1
 	}
 	//check fork lock
+	fmt.Println("phi", phi, "lFork", Forks[lFork].Locker)
 	Forks[lFork].Locker.Lock()
 	return lFork, true
 }
