@@ -1,4 +1,4 @@
-package wenhaialgo
+package multi_thread
 
 import (
 	"sync"
@@ -47,14 +47,23 @@ import (
 //链接：https://leetcode-cn.com/problems/the-dining-philosophers
 //著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+type Fork struct {
+	Locker *sync.Mutex
+}
+
 var (
-	PhilosophersExample = []int{0, 1, 2, 3, 4}
-	ForksExample        = []int{0, 1, 2, 3, 4} //num 0 fork on the right side of num 0 philosopher
-	UinitDiningTime     = 10                   //second
+	Philosophers                 = []int{0, 1, 2, 3, 4} //we assume in total have 5 phis, they may randomly want to eat
+	Forks                        = map[int]Fork{}
+	UnitDiningTime time.Duration = 1 //second
+	Retry                        = 3 //if no forks, retry 3 times
 )
 
-func The_dining_philosophers_v1(Philosophers, Forks []int, unitDiningTime, diningTimes int) {
-	startTime := time.Now()
-	wg := sync.WaitGroup{}
-	span := time.Now().Sub(startTime)
+func initForks() {
+	//we assume num 0 fork is on the right side of num 0 philosopher
+	length := len(Philosophers)
+	for i := 0; i < length; i++ {
+		Forks[i] = Fork{
+			Locker: &sync.Mutex{},
+		}
+	}
 }
