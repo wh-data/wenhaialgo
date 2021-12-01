@@ -1,6 +1,7 @@
 package multi_thread
 
 import (
+	"fmt"
 	"sync"
 	"time"
 )
@@ -54,8 +55,8 @@ type Fork struct {
 var (
 	Philosophers                 = []int{0, 1, 2, 3, 4} //we assume in total have 5 phis, they may randomly want to eat
 	Forks                        = map[int]Fork{}
-	UnitDiningTime time.Duration = 1 //second
-	Retry                        = 3 //if no forks, retry 3 times
+	UnitDiningTime time.Duration = 10 //Millisecond
+	Retry                        = 3  //if no forks, retry 3 times
 )
 
 func initForks() {
@@ -66,4 +67,28 @@ func initForks() {
 			Locker: &sync.Mutex{},
 		}
 	}
+}
+
+func pickLeftFork(phi int) (int, bool) {
+	var lFork int
+	//check fork num
+	if phi == 0 {
+		lFork = len(Philosophers) - 1
+	} else {
+		lFork = phi - 1
+	}
+	//check fork lock
+	Forks[lFork].Locker.Lock()
+	fmt.Println("phi ", phi, "take left fork", lFork)
+	return lFork, true
+}
+
+func pickRightFork(phi int) (int, bool) {
+	var rFork int
+	//check fork num
+	rFork = phi
+	//check fork lock
+	Forks[rFork].Locker.Lock()
+	fmt.Println("phi ", phi, "take right fork", rFork)
+	return rFork, true
 }

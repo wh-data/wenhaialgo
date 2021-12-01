@@ -26,17 +26,21 @@ func diningV2(wg *sync.WaitGroup, phi int) {
 	defer wg.Done()
 	//make forks ready
 	lFork, rFork := pickForks(phi, Retry)
-	time.Sleep(time.Millisecond * UnitDiningTime) //eating
+	time.Sleep(time.Millisecond * UnitDiningTime) //mock eating time
 	if lFork != -1 && rFork != -1 {
 		Forks[lFork].Locker.Unlock()
 		Forks[rFork].Locker.Unlock()
+		fmt.Println("phi ", phi, "takes fork: ", lFork, rFork)
 	} else {
 		fmt.Println("phi ", phi, "failed to eat")
+		fmt.Println(Forks[lFork].Locker)
+		fmt.Println(Forks[rFork].Locker)
 	}
 }
 
 //lock both left and right together to avoid dead lock
 //add retry to reduce the possibility of no resource
+//bas solution: even serial run (串行) is faster than this
 func pickForks(phi, retry int) (int, int) {
 	if retry < 0 {
 		return -1, -1
@@ -56,7 +60,7 @@ func pickForks(phi, retry int) (int, int) {
 		Forks[lFork].Locker.Lock()
 		Forks[rFork].Locker.Lock()
 	} else {
-		time.Sleep(time.Microsecond * 3)
+		time.Sleep(time.Second * 3) //bad solution, if retry time set not proper, it aways retry fail.
 		return pickForks(phi, retry-1)
 	}
 	return lFork, rFork

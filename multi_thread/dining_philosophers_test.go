@@ -28,20 +28,37 @@ func Test_the_dining_philosophers_v1(t *testing.T) {
 		hungryPhis[i] = rand.Intn(5)
 	}
 	fmt.Println(hungryPhis)
-	for count > 0 {
-		The_dining_philosophers_v1(hungryPhis)
-		count--
-	}
+	The_dining_philosophers_v1(hungryPhis)
 }
 
 func Test_the_dining_philosophers_v2(t *testing.T) {
+	count := 10
+	hungryPhis := make([]int, count)
+	for i := 0; i < count; i++ {
+		hungryPhis[i] = rand.Intn(5)
+	}
+	fmt.Println("hungryPhis", hungryPhis)
+	The_dining_philosophers_v2(hungryPhis)
+
+}
+
+func Test_the_dining_philosophers_v3(t *testing.T) {
 	count := 100
 	hungryPhis := make([]int, count)
 	for i := 0; i < count; i++ {
 		hungryPhis[i] = rand.Intn(5)
 	}
-	for count > 0 {
-		The_dining_philosophers_v2(hungryPhis)
-		count--
+	fmt.Println("hungryPhis", hungryPhis)
+	The_dining_philosophers_v3(hungryPhis)
+}
+
+//not good as v3
+func Test_the_dining_philosophers_v4(t *testing.T) {
+	count := 100
+	hungryPhis := make([]int, count)
+	for i := 0; i < count; i++ {
+		hungryPhis[i] = rand.Intn(5)
 	}
+	fmt.Println("hungryPhis", hungryPhis)
+	The_dining_philosophers_v4(hungryPhis)
 }
