@@ -22,6 +22,7 @@ func longestPalindrome(s string) string {
 	return str
 }
 
+//todo: consider even cases like 1221
 func getLongestPalindrome(arr []rune, index, length int) {
 	fmt.Println("debuggg index: ", index, "length: ", length)
 	if index+length > len(arr)-1 {
