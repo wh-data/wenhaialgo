@@ -6,10 +6,11 @@ import (
 )
 
 func TestLongestPalindrome(t *testing.T) {
-	s := "abcba" //"aa" //" | a" //"a" //"ttest"
-	str := longestPalindrome(s)
-	fmt.Println(myData)
-	fmt.Println(str)
+	s := []string{"baab", "abcba", "aa", " | a", "a", "ttest"}
+	for _, input := range s {
+		str := longestPalindrome(input)
+		fmt.Println(str)
+	}
 }
 
 func TestA(t *testing.T) {
