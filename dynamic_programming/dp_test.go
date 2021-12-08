@@ -3,6 +3,7 @@ package dynamic_programming
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestFragGoStair(t *testing.T) {
@@ -51,4 +52,26 @@ func TestBackpackDP(Z *testing.T) {
 	val := []int{1, 6, 18, 22, 28}
 	c := 11
 	BackpackIssueByDP(wt, val, c)
+}
+
+func TestBB(t *testing.T) {
+	fmt.Println("td"[len("td")-1:])
+	fmt.Println(string("test"[2]))
+}
+
+func TestIsPalindrome(t *testing.T) {
+	strs := []string{"a", "aa", "abba"}
+	for _, s := range strs {
+		fmt.Println(isPalindrome(s))
+	}
+}
+
+func TestGetLongestPalindrome(t *testing.T) {
+	s := []string{"baab", "abcba", "aa", " | a", "a", "ttest", "asdfadsfasegewtragdasfgasdbghgaadsfasdfadsfasdfcas"}
+	start := time.Now()
+	for _, x := range s {
+		_, p := GetPalindrome(x)
+		fmt.Println(p)
+	}
+	fmt.Println(time.Now().Sub(start).Nanoseconds())
 }
