@@ -24,3 +24,13 @@ func TestA(t *testing.T) {
 	fmt.Println(arr[1:2])
 	fmt.Println(arr[1:3])
 }
+
+func TestGetLongestPalindromeByDP(t *testing.T) {
+	s := "abaab"
+	getLongestPalindromeByDP(s)
+}
+
+func TestGetLongestPalindromeByCentralExpending(t *testing.T) {
+	s := "abbac"
+	fmt.Println(getLongestPalindromeByCentralExpending(s))
+}
