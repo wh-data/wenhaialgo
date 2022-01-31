@@ -149,3 +149,110 @@ func getLongestPalindromeByCentralExpending(s string) (int, string) {
 	}
 	return radiusFinal, central
 }
+
+//refer:https://www.cxyxiaowu.com/2665.html
+//instruction:
+/*
+
+L                        R
+.						.
+   -.-             -.-
+	m	.		.	i
+			.
+			C
+
+R and C are known max right edge and related center
+m is the left part index, and the symmetry radius is known
+i is the one we want to calculate symmetry radius
+since m and i are symmetry, so at least i have same symmetry radius as m, base on this, it can continue expending
+*/
+func getLongestPalindromeByManacher(s string) (maxLen int, centralIndex float32) {
+	C := 0
+	R := 0
+	newS := addMark(s, "#")
+	fmt.Println("new str: ", newS)
+	p := make([]int, len(newS))
+	for i := 0; i < len(newS); i++ {
+		//init p[i]
+		if i < R {
+			//c = (m+i)/2
+			m := 2*C - i
+			p[i] = getMax(p[m], R-i)
+		}
+		//continue extend p[i]
+		left := i - (1 + p[i])
+		right := i + (1 + p[i])
+		for {
+			if left >= 0 && right < len(newS) && newS[left] == newS[right] {
+				p[i]++
+				left--
+				right++
+			} else {
+				break
+			}
+		}
+		//check R and C update
+		if i+p[i] > R {
+			R = i + p[i]
+			C = i
+		}
+		if p[i] > maxLen {
+			maxLen = p[i]
+			centralIndex = (float32(C) - 1) / 2
+		}
+	}
+	return
+}
+
+func getMax(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}
+
+func addMark(s string, mark string) (newS string) {
+	newS = mark
+	for _, char := range s {
+		newS = fmt.Sprintf("%s%s%s", newS, string(char), mark)
+	}
+	return newS
+}
+
+func getLongestPalindromeByBruteForce(s string) {
+	bt := make([][]int, len(s))
+	for i, _ := range s {
+		bt[i] = make([]int, len(s))
+		for j := range bt[i] {
+			bt[i][j] = 1
+		}
+	}
+	for i, _ := range s {
+		for j := i + 1; j < len(s); j++ {
+			if checkIsPalindrome(s[i : j+1]) {
+				bt[i][j] = j - i + 1
+			}
+		}
+	}
+
+	for i := 0; i < len(s); i++ {
+		for j := 0; j < len(s); j++ {
+			fmt.Print(bt[i][j], " ")
+		}
+		fmt.Println()
+	}
+}
+
+func checkIsPalindrome(s string) bool {
+	left := 0
+	right := len(s) - 1
+	for left < right {
+		if s[left] != s[right] {
+			return false
+		}
+		left++
+		right--
+	}
+	return true
+}

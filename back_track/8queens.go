@@ -74,10 +74,12 @@ func queen(num int, goodSolutions, incompleteSolutions, curI *int, board [][]int
 }
 
 func printSolution(solutions *int, board [][]int, isGoodSolution bool) {
-	if isGoodSolution {
-		fmt.Println("good solution: ", *solutions)
-	} else {
-		fmt.Println("incomplete solution: ", *solutions)
+	if solutions != nil {
+		if isGoodSolution {
+			fmt.Println("good solution: ", *solutions)
+		} else {
+			fmt.Println("incomplete solution: ", *solutions)
+		}
 	}
 	max := len(board)
 	for i := 0; i < max; i++ {
@@ -122,4 +124,37 @@ func feasible(i, j int, board [][]int) bool {
 		}
 	}
 	return true
+}
+
+//back track 2nd practice
+//the simplest way to rmb the algo model
+func QueenSecondPractice(n int) int {
+	board := initBoard(n)
+	firstNode := 1
+	initI := 0
+	goodSolutionCount := new(int)
+	Queens2ndPrac(firstNode, initI, board, goodSolutionCount)
+	return *goodSolutionCount
+}
+
+//if do not set "initI": time complexity (n^2)^n--> take n=8 as example:64 * 64...*64 = 281,474,976,710,656
+//If set "initI": time complexity (n^2) * (n^2-(n)) ... n --> take n=8 as example: 64 * 56 * ...*8=676,457,349,120
+func Queens2ndPrac(node, initI int, board [][]int, goodSolutionCount *int) {
+	arrayLength := len(board)
+	maxNode := arrayLength
+	//路径结束的条件
+	if node > maxNode {
+		*goodSolutionCount++
+		return
+	}
+	//每一个node的可能性
+	for i := initI; i < arrayLength; i++ {
+		for j := 0; j < arrayLength; j++ {
+			if feasible(i, j, board) {
+				board[i][j] = 1
+				Queens2ndPrac(node+1, i, board, goodSolutionCount) //继续下一个node
+				board[i][j] = 0                                    //恢复当前状态，遍历下一个可能性
+			}
+		}
+	}
 }

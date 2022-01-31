@@ -34,3 +34,13 @@ func TestGetLongestPalindromeByCentralExpending(t *testing.T) {
 	s := "abbac"
 	fmt.Println(getLongestPalindromeByCentralExpending(s))
 }
+
+func TestXgetLongestPalindromeByManacher(t *testing.T) {
+	s := "abbac"
+	fmt.Println(getLongestPalindromeByManacher(s))
+}
+
+func TestXgetLongestPalindromeByBackTrack(t *testing.T) {
+	s := "abbac"
+	getLongestPalindromeByBruteForce(s)
+}
