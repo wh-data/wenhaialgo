@@ -273,3 +273,24 @@ func shiftUpSmallValV2(parent, length int, array []int) {
 	parent--
 	shiftUpSmallValV2(parent, length, array)
 }
+
+func ShiftBigValV2_forloop(arr []int, length int) {
+	fmt.Println("length: ", length)
+	depth := length/2 - 1
+	for i := depth; i >= 0; i-- {
+		leftC := 2*i + 1
+		rightC := 2*i + 2
+		fmt.Println(arr[i], arr[leftC], arr[rightC])
+		max := i
+		if leftC <= length-1 && arr[leftC] > arr[max] {
+			max = leftC
+		}
+		if rightC <= length-1 && arr[rightC] > arr[max] {
+			max = rightC
+		}
+		if max != i {
+			arr[i], arr[max] = arr[max], arr[i]
+		}
+		fmt.Println("after ", arr[i], arr[leftC], arr[rightC])
+	}
+}

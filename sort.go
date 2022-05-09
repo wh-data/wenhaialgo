@@ -41,6 +41,16 @@ func HeapSortV2(arr []int, asc bool) {
 	}
 }
 
+func HeapSortV2_forloop(arr []int) {
+	length := len(arr)
+	for i := length; i >= 0; i-- {
+		ShiftBigValV2_forloop(arr, i)
+		if i > 0 {
+			arr[0], arr[i-1] = arr[i-1], arr[0]
+		}
+	}
+}
+
 //time complexity:average O(nlogn)
 //space complexity: O(1)
 func QuickSort(arr []int, asc bool) {

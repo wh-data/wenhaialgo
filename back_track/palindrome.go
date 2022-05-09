@@ -63,7 +63,7 @@ func getLongestPalindromeByDP(s string) {
 	//先遍历列
 	for j := 0; j < len(dp); j++ {
 		for i := 0; i < j; i++ {
-			dp[i][j] = s[j] == s[i] && (j-i < 2 || dp[i+1][j-1])
+			dp[i][j] = s[j] == s[i] && (j-i < 2 || dp[i+1][j-1]) //dp的概念，dp[i][j]true的话，dp[i+1][j-1]也true
 			if dp[i][j] {
 			}
 		}
