@@ -6,8 +6,11 @@ import (
 )
 
 func TestSortByHeap(t *testing.T) {
-	arr := []int{8, 9, 5, 2, 1, 4, 7, 23, 34, 33, 11, 80, 90, 50, 20, 10, 40, 70, 230, 340, 330, 110, 2300, 3400, 3300}
-	HeapSortV2_forloop(arr)
+	//arr := []int{8, 9, 5, 2, 1, 4, 7, 23, 34, 33, 11, 80, 90, 50, 20, 10, 40, 70, 230, 340, 330, 110, 2300, 3400, 3300}
+	//HeapSortV2_forloop(arr)
+	//fmt.Println(arr)
+	arr := []int{8, 9, 5, 10, 1}
+	quickSortV2(arr, 0, len(arr)-1)
 	fmt.Println(arr)
 	//arr = []int{8, 9, 5, 2, 1, 4, 7}
 	//HeapSort(arr, true)

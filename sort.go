@@ -132,6 +132,28 @@ func quickSortDivideDec(arr []int, l, r int) int {
 	return r
 }
 
+func quickSortV2(arr []int, l, r int) {
+	if l >= r {
+		return
+	}
+	oriR := r
+	oriL := l
+	p := arr[l]
+	for r > l {
+		if arr[r] < p {
+			for r > l {
+				if arr[l] >= p {
+					arr[l], arr[r] = arr[r], arr[l]
+				}
+				l++
+			}
+		}
+		r--
+	}
+	quickSortV2(arr, r+1, oriR)
+	quickSortV2(arr, oriL, r)
+}
+
 //key point: bubble sort is to adjust adjacent elements, if no change, mean all are sorted. can stop further check
 //time complexity: average O(n^2), can be simpler then GeneralSort in some case
 //space complexity: O(1)
