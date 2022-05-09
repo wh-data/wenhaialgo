@@ -274,13 +274,12 @@ func shiftUpSmallValV2(parent, length int, array []int) {
 	shiftUpSmallValV2(parent, length, array)
 }
 
+//time complexity is log(n), log(n)是数的层数，重新调整数时候只需要调整有变动的那个分支
 func ShiftBigValV2_forloop(arr []int, length int) {
-	fmt.Println("length: ", length)
 	depth := length/2 - 1
 	for i := depth; i >= 0; i-- {
 		leftC := 2*i + 1
 		rightC := 2*i + 2
-		fmt.Println(arr[i], arr[leftC], arr[rightC])
 		max := i
 		if leftC <= length-1 && arr[leftC] > arr[max] {
 			max = leftC
@@ -291,6 +290,5 @@ func ShiftBigValV2_forloop(arr []int, length int) {
 		if max != i {
 			arr[i], arr[max] = arr[max], arr[i]
 		}
-		fmt.Println("after ", arr[i], arr[leftC], arr[rightC])
 	}
 }
