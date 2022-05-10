@@ -75,3 +75,7 @@ func TestGetLongestPalindrome(t *testing.T) {
 	}
 	fmt.Println(time.Now().Sub(start).Nanoseconds())
 }
+
+func TestNMPath(t *testing.T) {
+	fmt.Println(n_m_path(4, 3))
+}
