@@ -12,3 +12,9 @@ func TestShift(t *testing.T) {
 	fmt.Println(shift_string_v2(str, shift))
 	fmt.Println(reverse_string(str))
 }
+
+func TestRandom(t *testing.T) {
+	a := "aa"
+	b := "aab"
+	fmt.Println(ransom_magzine(b, a))
+}

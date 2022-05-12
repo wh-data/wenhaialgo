@@ -46,3 +46,25 @@ func reverse_string(str string) string {
 	}
 	return string(new_runes)
 }
+
+//判断一个字符串是否可以组成另一个
+func ransom_magzine(ra, mag string) bool {
+	mymap := make(map[rune]int, 0)
+	for _, r := range ra {
+		if _, ok := mymap[r]; ok {
+			mymap[r]++
+		} else {
+			mymap[r] = 1
+		}
+	}
+	for _, m := range mag {
+		if _, ok := mymap[m]; !ok {
+			return false
+		}
+		mymap[m]--
+		if mymap[m] == 0 {
+			delete(mymap, m)
+		}
+	}
+	return true
+}
