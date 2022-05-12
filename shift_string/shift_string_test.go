@@ -10,4 +10,5 @@ func TestShift(t *testing.T) {
 	shift := 4
 	fmt.Println(shift_string(str, shift))
 	fmt.Println(shift_string_v2(str, shift))
+	fmt.Println(reverse_string(str))
 }

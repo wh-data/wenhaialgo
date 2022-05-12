@@ -33,3 +33,16 @@ func shift_string_v2(str string, shift int) string {
 	cut := (l - 1) - po - 1 //cut position
 	return string(append(new_runes[cut+1:], new_runes[:cut+1]...))
 }
+
+func reverse_string(str string) string {
+	new_runes := []rune(str)
+	l := len(new_runes)
+	i := 0
+	j := l - 1
+	for j > i {
+		new_runes[i], new_runes[j] = new_runes[j], new_runes[i]
+		i++
+		j--
+	}
+	return string(new_runes)
+}
