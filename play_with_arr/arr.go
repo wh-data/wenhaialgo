@@ -80,3 +80,37 @@ func add_on(arr []int, s int) int {
 	}
 	return res
 }
+
+//n is positive integer
+func Spiral_Matrix(n int) [][]int {
+	matrix := make([][]int, n)
+	for i, _ := range matrix {
+		matrix[i] = make([]int, n)
+	}
+	x0, y0 := 0, 0
+	xn, yn := n-1, n-1
+	num := 1
+	for num <= n*n {
+		for i := x0; i <= xn; i++ {
+			matrix[i][y0] = num
+			num++
+		}
+		for j := y0 + 1; j <= yn; j++ {
+			matrix[xn][j] = num
+			num++
+		}
+		for i := xn - 1; i >= x0; i-- {
+			matrix[i][yn] = num
+			num++
+		}
+		for j := yn - 1; j > y0; j-- {
+			matrix[x0][j] = num
+			num++
+		}
+		x0++
+		xn--
+		y0++
+		yn--
+	}
+	return matrix
+}
