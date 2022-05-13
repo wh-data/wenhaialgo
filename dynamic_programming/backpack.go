@@ -136,3 +136,41 @@ func BackpackIssueByDP(wt, val []int, size int) int {
 	}
 	return dp[len(wt)][size]
 }
+
+/*画表格分析会简单很多
+
+        1	2	3	4	5	6	7	8	9	10	11	12	13	14	15
+{5, 12}	0	0	0	0	12	12	12	12	12	12	12	12	12	12	12
+{4, 3}	0	0	0	3	12	12	12	12	15	15	15	15	15	15	15
+{7, 10}	0	0	0	3	12	12	12	12	15	15	15	22	22	22	22
+{2, 3}	0	3	3	3	12	12	15	15	15	15	18	22	22	25	25
+{6, 6}	0	3	3	3	12	12	15	15	15	15	18	22	22	25	25
+————————————————
+版权声明：本文为CSDN博主「雪zi」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/LemonGirls/article/details/83378980
+*/
+
+//precondition: w length equal v length
+func back_pack_v3(w, v []int, c int) int {
+	n := len(w)
+	if n != len(v) || n == 0 {
+		return 0
+	}
+	//init 2 dimension arr with 0
+	dp := make([][]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = make([]int, n)
+	}
+	//init first line
+	for j := w[0]; j < n; j++ {
+		dp[0][j] = v[0]
+	}
+	//可顺序放，概念是如果放比较某一个容量情况下放能增值还是不放（放之前的case）值比较大
+	for i := 1; i < n; i++ {
+		for j := 0; j < c; j++ {
+			//dp[i-1][j-w[i]]这个是理解的关键，表示当放第i个物品时，j-w[i]的空间时候的最大值加上第i个物品的值
+			dp[i][j] = int(math.Max(float64(dp[i-1][j]), float64(dp[i-1][j-w[i]]+v[i])))
+		}
+	}
+	return dp[n-1][c]
+}
