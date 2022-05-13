@@ -169,6 +169,7 @@ func back_pack_v3(w, v []int, c int) int {
 	for i := 1; i < n; i++ {
 		for j := 0; j < c; j++ {
 			//dp[i-1][j-w[i]]这个是理解的关键，表示当放第i个物品时，j-w[i]的空间时候的最大值加上第i个物品的值
+			//例如总空间是15，当我放质量为7的物品时候，最大的价值是：（15-7=8）的空间的时候的最大价值加上本物品的价值
 			dp[i][j] = int(math.Max(float64(dp[i-1][j]), float64(dp[i-1][j-w[i]]+v[i])))
 		}
 	}
