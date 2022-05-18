@@ -151,7 +151,7 @@ func BackpackIssueByDP(wt, val []int, size int) int {
 */
 
 //precondition: w length equal v length
-func back_pack_v3(w, v []int, c int) int {
+func Back_pack_v3(w, v []int, c int) int {
 	n := len(w)
 	if n != len(v) || n == 0 {
 		return 0
@@ -159,18 +159,23 @@ func back_pack_v3(w, v []int, c int) int {
 	//init 2 dimension arr with 0
 	dp := make([][]int, n)
 	for i := 0; i < n; i++ {
-		dp[i] = make([]int, n)
+		dp[i] = make([]int, c+1)
 	}
 	//init first line
-	for j := w[0]; j < n; j++ {
+	for j := w[0]; j <= c; j++ {
 		dp[0][j] = v[0]
 	}
 	//可顺序放，概念是如果放比较某一个容量情况下放能增值还是不放（放之前的case）值比较大
 	for i := 1; i < n; i++ {
-		for j := 0; j < c; j++ {
+		for j := 0; j <= c; j++ {
 			//dp[i-1][j-w[i]]这个是理解的关键，表示当放第i个物品时，j-w[i]的空间时候的最大值加上第i个物品的值
 			//例如总空间是15，当我放质量为7的物品时候，最大的价值是：（15-7=8）的空间的时候的最大价值加上本物品的价值
-			dp[i][j] = int(math.Max(float64(dp[i-1][j]), float64(dp[i-1][j-w[i]]+v[i])))
+			if j-w[i] >= 0 {
+				dp[i][j] = int(math.Max(float64(dp[i-1][j]), float64(dp[i-1][j-w[i]]+v[i])))
+			} else {
+				dp[i][j] = dp[i-1][j]
+			}
+
 		}
 	}
 	return dp[n-1][c]
