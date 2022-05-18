@@ -82,6 +82,7 @@ func TestNMPath(t *testing.T) {
 	fmt.Println(n_m_path(4, 3))
 }
 
+//testing cases in 牛客
 func TestBback_pack_v3(t *testing.T) {
 	c := 2169 //8466
 	w := make([]int, 0)
