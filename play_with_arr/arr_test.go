@@ -2,6 +2,7 @@ package play_with_arr
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 )
 
@@ -134,4 +135,112 @@ func TestLongSub_sliding_window(t *testing.T) {
 		}
 	}
 	fmt.Println(max)
+}
+
+//find sum of two numbs
+func twoSum(nums []int, target int) []int {
+	mymap := make(map[int]int, 0)
+	length := len(nums)
+	if length < 2 {
+		return nil
+	}
+	for i := 0; i < length; i++ {
+		if idx, ok := mymap[target-nums[i]]; ok {
+			return []int{idx, i}
+		}
+		mymap[nums[i]] = i
+	}
+	return nil
+}
+
+func Test_findMedianSortedArrays(t *testing.T) {
+	nums1 := []int{1, 2}
+	nums2 := []int{3, 4}
+	//fmt.Println(findMedianSortedArrays(nums1, nums2))
+	fmt.Println(findMedian(nums1, nums2))
+}
+
+func findMedian(nums1 []int, nums2 []int) float64 {
+	combined := append(nums1, nums2...)
+	sort.Ints(combined[:])
+
+	var (
+		median     float64
+		idx1, idx2 int
+	)
+	if len(combined)%2 != 0 {
+		idx1 = int(float64(len(combined)-1) * float64(0.5))
+		median = float64(combined[idx1])
+	} else {
+		idx1 = int(float64(len(combined)-1) * float64(0.5))
+		idx2 = int(float64(len(combined)) * float64(0.5))
+		median = (float64(combined[idx1]) + float64(combined[idx2])) / float64(2)
+	}
+
+	return median
+}
+
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	p1, p2 := 0, 0
+	newnums := make([]int, 0)
+
+	if len(nums1) == 0 {
+		newnums = nums2
+	} else if len(nums2) == 0 {
+		newnums = nums1
+	} else {
+		v1 := nums1[0]
+		v2 := nums2[0]
+		tem := int(-1e6 - 1)
+		for p1 < len(nums1) || p2 < len(nums2) {
+			fmt.Println("p1: ", p1)
+			fmt.Println("p2: ", p2)
+			if p1 < len(nums1) {
+				v1 = nums1[p1]
+				if v1 == tem {
+					p1++
+					continue
+				}
+			} else {
+				v1 = 1e6 + 1
+			}
+			if p2 < len(nums2) {
+				v2 = nums2[p2]
+				if v2 == tem {
+					p2++
+					continue
+				}
+			} else {
+				v2 = 1e6 + 1
+			}
+			if v1 < v2 {
+				newnums = append(newnums, v1)
+				tem = v1
+				if p1 < len(nums1) {
+					p1++
+				}
+			} else if v2 < v1 {
+				newnums = append(newnums, v2)
+				tem = v2
+				if p2 < len(nums2) {
+					p2++
+				}
+			} else { //v1==v2
+				newnums = append(newnums, v2)
+				tem = v2
+				if p1 < len(nums1) {
+					p1++
+				}
+				if p2 < len(nums2) {
+					p2++
+				}
+			}
+		}
+	}
+	length := len(newnums)
+	if length%2 == 1 {
+		return float64(newnums[length/2])
+	} else {
+		return (float64(newnums[length/2-1]) + float64(newnums[length/2])) / 2
+	}
 }
