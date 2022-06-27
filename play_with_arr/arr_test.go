@@ -244,3 +244,87 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 		return (float64(newnums[length/2-1]) + float64(newnums[length/2])) / 2
 	}
 }
+
+//The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+//
+//P   A   H   N
+//A P L S I I G
+//Y   I   R
+//And then read line by line: "PAHNAPLSIIGYIR"
+//
+//Write the code that will take a string and make this conversion given a number of rows:
+//
+//string convert(string s, int numRows);
+//
+//
+//Example 1:
+//
+//Input: s = "PAYPALISHIRING", numRows = 3
+//Output: "PAHNAPLSIIGYIR"
+//Example 2:
+//
+//Input: s = "PAYPALISHIRING", numRows = 4
+//Output: "PINALSIGYAHRPI"
+//Explanation:
+//P     I    N
+//A   L S  I G
+//Y A   H R
+//P     I
+//Example 3:
+//
+//Input: s = "A", numRows = 1
+//Output: "A"
+//
+//
+//Constraints:
+//
+//1 <= s.length <= 1000
+//s consists of English letters (lower-case and upper-case), ',' and '.'.
+//1 <= numRows <= 1000
+
+func Test_zigzag_convert(t *testing.T) {
+	fmt.Println(zigzag_convert("ab", 1))
+}
+func zigzag_convert(s string, numRows int) string {
+	if numRows == 1 {
+		return s
+	}
+
+	metrix := make([][]rune, numRows)
+	chars := []rune(s)
+
+	for i, _ := range metrix {
+		metrix[i] = make([]rune, 0)
+	}
+
+	f := true
+	i := 0
+
+	for _, v := range chars {
+		fmt.Println(string(v), i)
+		metrix[i] = append(metrix[i], v)
+		flag(&i, f)
+		if i == numRows {
+			i -= 2
+			f = false
+		}
+		if i == -1 {
+			i += 2
+			f = true
+		}
+	}
+
+	res := ""
+	for _, row := range metrix {
+		res += string(row)
+	}
+	return res
+}
+func flag(i *int, f bool) {
+	if f {
+		*i++
+	} else {
+		*i--
+	}
+
+}
