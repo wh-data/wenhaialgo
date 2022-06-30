@@ -3,6 +3,7 @@ package play_with_arr
 import (
 	"fmt"
 	"sort"
+	"strings"
 	"testing"
 )
 
@@ -327,4 +328,216 @@ func flag(i *int, f bool) {
 		*i--
 	}
 
+}
+
+/*
+Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where:
+
+'.' Matches any single character.​​​​
+'*' Matches zero or more of the preceding element.
+The matching should cover the entire input string (not partial).
+
+
+
+Example 1:
+
+Input: s = "aa", p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+Example 2:
+
+Input: s = "aa", p = "a*"
+Output: true
+Explanation: '*' means zero or more of the preceding element, 'a'. Therefore, by repeating 'a' once, it becomes "aa".
+Example 3:
+
+Input: s = "ab", p = ".*"
+Output: true
+Explanation: ".*" means "zero or more (*) of any character (.)".
+
+
+Constraints:
+
+1 <= s.length <= 20
+1 <= p.length <= 30
+s contains only lowercase English letters.
+p contains only lowercase English letters, '.', and '*'.
+It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.
+*/
+
+func TestIsMatch(t *testing.T) {
+	s := "mississippi"
+	p := "mis*is*ip*."
+	fmt.Println(isMatch(s, p))
+}
+
+//todo: the algo is not finished, direction is correct
+func isMatch(s string, p string) bool {
+	arr_s := []rune(s)
+	arr_p := []rune(p)
+	if len(arr_p) == 0 {
+		return len(arr_s) == 0
+	}
+
+	dp := make([][]bool, len(arr_s)+1)
+	for i, _ := range dp {
+		dp[i] = make([]bool, len(arr_p)+1)
+	}
+
+	dp[0][0] = true
+	for j := 1; j <= len(arr_p); j++ {
+		dp[0][j] = dp[0][j-1] && string(arr_p[j-1]) == "*"
+	}
+	for i := 1; i <= len(arr_s); i++ {
+		dp[i][0] = false
+	}
+	for j := 1; j <= len(arr_p); j++ {
+		for i := 1; i <= len(arr_s); i++ {
+			if arr_s[i-1] == arr_p[j-1] || string(arr_p[j-1]) == "." {
+				dp[i][j] = dp[i-1][j-1]
+			} else if string(arr_p[j-1]) == "*" {
+				if i == 1 {
+					dp[i][j] = i == 1 && string(arr_s[i-1]) == string(arr_p[j-2]) || string(arr_p[j-2]) == "."
+				} else {
+					dp[i][j] = dp[i-1][j-1] ||
+						(dp[i-1][j] && (arr_s[i-1] == arr_s[i-2] || string(arr_p[j-2]) == "."))
+				}
+			}
+		}
+	}
+	for i := 0; i <= len(arr_s); i++ {
+		for j := 0; j <= len(arr_p); j++ {
+			if dp[i][j] {
+				fmt.Print("\033[32m", dp[i][j], " ")
+			} else {
+				fmt.Print("\033[31m", dp[i][j], " ")
+			}
+		}
+		fmt.Println()
+	}
+	return dp[len(arr_s)][len(arr_p)]
+}
+
+/*Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+For example, 2 is written as II in Roman numeral, just two one's added together. 12 is written as XII, which is simply X + II. The number 27 is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9.
+X can be placed before L (50) and C (100) to make 40 and 90.
+C can be placed before D (500) and M (1000) to make 400 and 900.
+Given an integer, convert it to a roman numeral.
+
+
+
+Example 1:
+
+Input: num = 3
+Output: "III"
+Explanation: 3 is represented as 3 ones.
+Example 2:
+
+Input: num = 58
+Output: "LVIII"
+Explanation: L = 50, V = 5, III = 3.
+Example 3:
+
+Input: num = 1994
+Output: "MCMXCIV"
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+
+
+Constraints:
+
+1 <= num <= 3999
+
+*/
+//1 <= num <= 3999
+func TestIntToRoman(t *testing.T) {
+	num := 3000
+	fmt.Println(intToRoman(num))
+	roman := "VI"
+	fmt.Println(romanToInt(roman))
+}
+
+func intToRoman(num int) string {
+	roman := []string{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"}
+	alb := []int{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}
+	res := ""
+	for i, v := range alb {
+		res += strings.Repeat(roman[i], num/v)
+		num %= v
+	}
+	return res
+}
+
+func romanToInt(s string) int {
+	romanMap := map[string]int{"M": 1000, "CM": 900, "D": 500, "CD": 400, "C": 100, "XC": 90, "L": 50,
+		"XL": 40, "X": 10, "IX": 9, "V": 5, "IV": 4, "I": 1}
+	arr_ori := []rune(s)
+	l, r := 0, 0
+	res := 0
+	for r < len(arr_ori) {
+		if r+2 <= len(arr_ori) {
+			if v, ok := romanMap[string(arr_ori[l:r+2])]; ok {
+				res += v
+				l += 2
+				r += 2
+				continue
+			}
+		}
+		if v, ok := romanMap[string(arr_ori[l:r+1])]; ok {
+			res += v
+			l++
+			r++
+		}
+	}
+	return res
+}
+
+func TestLongestCommonPrefix(t *testing.T) {
+	strs := []string{"abg", "c", "adfs"}
+	fmt.Println(longestCommonPrefix(strs))
+}
+
+func longestCommonPrefix(strs []string) string {
+	length := len(strs)
+	if length == 0 {
+		return ""
+	}
+	if length == 1 {
+		return strs[0]
+	}
+	p := 1
+	base := strs[0]
+	res := ""
+	for p < length {
+		res = ""
+		rune_b := []rune(base)
+		rune_c := []rune(strs[p])
+		len_b := len(rune_b)
+		len_c := len(rune_c)
+		l, r := 0, 0
+		for l < len_b && r < len_c {
+			if rune_b[l] == rune_c[r] {
+				res += string(rune_b[l])
+				l++
+				r++
+				continue
+			}
+			break
+		}
+		base = res
+		p++
+	}
+	return res
 }
