@@ -2,6 +2,7 @@ package play_with_arr
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 	"testing"
@@ -538,6 +539,84 @@ func longestCommonPrefix(strs []string) string {
 		}
 		base = res
 		p++
+	}
+	return res
+}
+
+func TestThreeSum(t *testing.T) {
+	nums := []int{-1, 0, 1, -1, 2}
+	res := threeSum(nums)
+	for _, v := range res {
+		fmt.Println(v)
+	}
+}
+func threeSum(nums []int) [][]int {
+	length := len(nums)
+	if length < 3 {
+		return nil
+	}
+	sort.Ints(nums)
+	res := make([][]int, 0)
+	myMap := make(map[string]struct{})
+	for i := 0; i < length-2; i++ {
+		j := i + 1
+		k := length - 1
+		for j < k {
+			sum := nums[i] + nums[j] + nums[k]
+			if sum == 0 {
+				if _, ok := myMap[fmt.Sprint(nums[i])+fmt.Sprint(nums[j])+fmt.Sprint(nums[k])]; !ok {
+					myMap[fmt.Sprint(nums[i])+fmt.Sprint(nums[j])+fmt.Sprint(nums[k])] = struct{}{}
+					res = append(res, []int{nums[i], nums[j], nums[k]})
+				}
+				k--
+				j++
+			} else if sum > 0 {
+				k--
+			} else {
+				j++
+			}
+		}
+	}
+	return res
+}
+
+func TestThreeSumClosest(t *testing.T) {
+	nums := []int{-111, -111, 3, 6, 7, 16, 17, 18, 19}
+	target := 13
+	fmt.Println("final:", threeSumClosest(nums, target))
+}
+func threeSumClosest(nums []int, target int) int {
+	length := len(nums)
+	if length < 3 {
+		return 0
+	}
+	sort.Ints(nums)
+	fmt.Println(nums)
+	res := nums[0] + nums[1] + nums[length-1]
+	diff_old := res - target
+	for i := 0; i < length-2; i++ {
+		j := i + 1
+		k := length - 1
+		for j < k {
+			sum := nums[i] + nums[j] + nums[k]
+			diff := sum - target //int(math.Abs(float64(sum)-float64(target)))
+			if diff == 0 {
+				return sum
+			} else {
+				fmt.Println(i, j, k)
+				fmt.Println(nums[i], nums[j], nums[k])
+				fmt.Println("new-diff", diff, "old-res: ", diff_old)
+				if math.Abs(float64(diff)) < math.Abs(float64(diff_old)) {
+					diff_old = diff
+					res = sum
+				}
+				if diff > 0 {
+					k--
+				} else {
+					j++
+				}
+			}
+		}
 	}
 	return res
 }
