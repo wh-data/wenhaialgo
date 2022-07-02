@@ -620,3 +620,117 @@ func threeSumClosest(nums []int, target int) int {
 	}
 	return res
 }
+
+func TestFourSum(t *testing.T) {
+	nums := []int{-3, -2, -1, 0, 0, 1, 2, 3}
+	target := 0
+	fmt.Println("final:", fourSum(nums, target))
+}
+
+func fourSum(nums []int, target int) [][]int {
+	length := len(nums)
+	if length < 4 {
+		return nil
+	}
+	hashMap := make(map[string]struct{}, 0)
+	res := make([][]int, 0)
+	sort.Ints(nums)
+	for i := 0; i < length-3; i++ {
+		for j := i + 1; j < length-2; j++ {
+			k := j + 1
+			l := length - 1
+			for k < l {
+				sum := nums[i] + nums[j] + nums[k] + nums[l]
+				if sum == target {
+					key := fmt.Sprint(nums[i]) + ":" + fmt.Sprint(nums[j]) + ":" + fmt.Sprint(nums[k]) + ":" + fmt.Sprint(nums[l])
+					if _, ok := hashMap[key]; !ok {
+						fmt.Println(key)
+						res = append(res, []int{nums[i], nums[j], nums[k], nums[l]})
+						hashMap[key] = struct{}{}
+					}
+					l--
+					k++
+				} else if sum > target {
+					l--
+				} else {
+					k++
+				}
+			}
+		}
+	}
+	return res
+}
+
+/*
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+
+
+Example 1:
+
+Input: s = "()"
+Output: true
+Example 2:
+
+Input: s = "()[]{}"
+Output: true
+Example 3:
+
+Input: s = "(]"
+Output: false
+
+
+Constraints:
+
+1 <= s.length <= 104
+s consists of parentheses only '()[]{}'.
+*/
+
+func TestIsValid(t *testing.T) {
+	s := "(),{}"
+	fmt.Println(isValid(s))
+}
+func isValid(s string) bool {
+	pair := make(map[string]string, 0)
+	pair[")"] = "("
+	pair["}"] = "{"
+	pair["]"] = "["
+	allMap := make(map[string]struct{}, 0)
+	allMap[")"] = struct{}{}
+	allMap["}"] = struct{}{}
+	allMap["]"] = struct{}{}
+	allMap["("] = struct{}{}
+	allMap["{"] = struct{}{}
+	allMap["["] = struct{}{}
+	stack := []string{}
+	inputs := []rune(s)
+	input_brac := []string{}
+	for _, v := range inputs {
+		if _, ok := allMap[string(v)]; ok {
+			input_brac = append(input_brac, string(v))
+		}
+	}
+	for i := 0; i < len(input_brac); i++ {
+		if v, ok := pair[input_brac[i]]; ok {
+			if i == 0 {
+				return false
+			}
+			fmt.Println(stack)
+			if len(stack) < 1 {
+				return false
+			}
+			if stack[len(stack)-1] == v {
+				stack = stack[0 : len(stack)-1]
+			} else {
+				stack = append(stack, input_brac[i])
+			}
+		} else {
+			stack = append(stack, input_brac[i])
+		}
+	}
+	return len(stack) == 0
+}
