@@ -330,3 +330,29 @@ func swapPairs(head *ListNode) *ListNode {
 	}
 	return res
 }
+
+//k<=list length
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	if head == nil {
+		return nil
+	}
+	arr := make([]*ListNode, 0)
+	cur := head
+	for i := 0; i < k; i++ {
+		if cur == nil {
+			return head
+		}
+		tem := cur
+		arr = append(arr, tem)
+		cur = cur.Next
+	}
+	tail := arr[k-1].Next
+	arr[0].Next = tail
+	for i := 1; i < k; i++ {
+		arr[i].Next = arr[i-1]
+	}
+	tem := tail
+	res := reverseKGroup(tem, k)
+	arr[0].Next = res
+	return arr[k-1]
+}

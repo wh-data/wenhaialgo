@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -733,4 +734,310 @@ func isValid(s string) bool {
 		}
 	}
 	return len(stack) == 0
+}
+
+func removeDuplicates(nums []int) int {
+	length := len(nums)
+	if length < 2 {
+		return length
+	}
+	j := 0
+	for i := 0; i < length; i++ {
+		if nums[i] != nums[j] {
+			j++
+			nums[j] = nums[i]
+		}
+	}
+	return j + 1
+}
+
+func removeElement(nums []int, val int) int {
+	length := len(nums)
+	j := 0
+	for i := 0; i < length; i++ {
+		if nums[i] != val {
+			nums[j] = nums[i]
+			j++
+		}
+	}
+	return j
+}
+
+/*
+Implement strStr().
+
+Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+Clarification:
+
+What should we return when needle is an empty string? This is a great question to ask during an interview.
+
+For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
+
+
+
+Example 1:
+
+Input: haystack = "hello", needle = "ll"
+Output: 2
+Example 2:
+
+Input: haystack = "aaaaa", needle = "bba"
+Output: -1
+
+
+Constraints:
+
+1 <= haystack.length, needle.length <= 104
+haystack and needle consist of only lowercase English characters.
+*/
+
+//sliding wingdow, O(N)
+func strStr(haystack string, needle string) int {
+	arr_h := []rune(haystack)
+	arr_n := []rune(needle)
+	if len(arr_h) == 0 || len(arr_n) == 0 || len(arr_h) < len(arr_n) {
+		return -1
+	}
+	l, r := 0, 0
+	for r < len(arr_h) {
+		for i := 0; i < len(arr_n); i++ {
+			if r >= len(arr_h) || arr_n[i] != arr_h[r] {
+				l++
+				r = l
+				break
+			} else {
+				if i == len(arr_n)-1 {
+					return l
+				}
+				r++
+			}
+		}
+	}
+	return -1
+}
+
+func TestSS(t *testing.T) {
+	a := -2147483648
+	b := -1
+	fmt.Println(divide(a, b))
+	fmt.Println(^1 + 1)
+}
+
+func divide(dividend int, divisor int) int {
+	if dividend == 0 || divisor == 0 {
+		return 0
+	}
+	res := 0
+	if (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0) {
+		res = addMethod(dividend, divisor)
+	} else {
+		res = deduceMethod(dividend, divisor)
+	}
+	return res
+
+}
+func addMethod(dividend int, divisor int) int {
+	//max := math.Pow(2, 31)-1
+	min := int(-1 * math.Pow(2, 31))
+	res := 0
+	if dividend > 0 {
+		for dividend+divisor >= 0 {
+			if res == min {
+				return res
+			}
+			res--
+			dividend = dividend + divisor
+		}
+	} else {
+		for dividend+divisor <= 0 {
+			if res == min {
+				return res
+			}
+			res--
+			dividend = dividend + divisor
+		}
+	}
+	return res
+}
+func deduceMethod(dividend int, divisor int) int {
+	max := int(math.Pow(2, 31) - 1)
+	res := 0
+	if dividend > 0 {
+		for dividend-divisor >= 0 {
+			if res == max {
+				return res
+			}
+			res++
+			dividend = dividend - divisor
+		}
+	} else {
+		for dividend-divisor <= 0 {
+			if res == max {
+				return res
+			}
+			res++
+			dividend = dividend - divisor
+		}
+	}
+	return res
+}
+
+/*
+Suppose we have an unsorted log file of accesses to web resources. Each log entry consists of an access time, the ID of the user making the access, and the resource ID.
+
+The access time is represented as seconds since 00:00:00, and all times are assumed to be in the same day.
+
+Example:
+logs1 = [
+    ["58523", "user_1", "resource_1"],
+    ["62314", "user_2", "resource_2"],
+    ["54001", "user_1", "resource_3"],
+    ["200", "user_6", "resource_5"],
+    ["215", "user_6", "resource_4"],
+    ["54060", "user_2", "resource_3"],
+    ["53760", "user_3", "resource_3"],
+    ["58522", "user_22", "resource_1"],
+    ["53651", "user_5", "resource_3"],
+    ["2", "user_6", "resource_1"],
+    ["100", "user_6", "resource_6"],
+    ["400", "user_7", "resource_2"],
+    ["100", "user_8", "resource_6"],
+    ["54359", "user_1", "resource_3"],
+]
+
+resource_1:[2,58522,58523]
+l:=0,r:=2
+for l<r{
+
+}
+
+Example 2:
+logs2 = [
+    ["300", "user_1", "resource_3"],
+    ["599", "user_1", "resource_3"],
+    ["900", "user_1", "resource_3"],
+    ["1199", "user_1", "resource_3"],
+    ["1200", "user_1", "resource_3"],
+    ["1201", "user_1", "resource_3"],
+    ["1202", "user_1", "resource_3"]
+]
+
+
+
+Example 3:
+logs3 = [
+    ["300", "user_10", "resource_5"]
+]
+
+Write a function that takes the logs and returns the resource with the highest number of accesses in any 5 minute window, together with how many accesses it saw.
+
+Expected Output:
+most_requested_resource(logs1) # => ('resource_3', 3) [resource_3 is accessed at 53760, 54001, and 54060]
+most_requested_resource(logs2) # => ('resource_3', 4) [resource_3 is accessed at 1199, 1200, 1201, and 1202]
+most_requested_resource(logs3) # => ('resource_5', 1) [resource_5 is accessed at 300]
+
+
+
+
+Complexity analysis variables:
+
+n: number of logs in the input
+
+*/
+
+func getTimes(log [][]string) map[string][]int {
+	myHash := make(map[string][]int)
+	length := len(log)
+	for i := 0; i < length; i++ {
+		if len(log[i]) < 3 {
+			continue
+		}
+		user := log[i][1]
+		tim := log[i][0]
+		res, err := strconv.Atoi(tim)
+		if err != nil {
+			continue
+		}
+		if _, ok := myHash[user]; ok {
+			myHash[user] = make([]int, 2)
+			fmt.Println("LEN: ", myHash[user])
+			myHash[user][0] = res
+			myHash[user][1] = res
+			continue
+		}
+		if res < myHash[user][0] {
+			myHash[user][0] = res
+			continue
+		}
+		if res > myHash[user][1] {
+			myHash[user][1] = res
+			continue
+		}
+	}
+	return myHash
+}
+
+//solution example
+// resource_3:[300,599,900,1199,1200,1201,1202]
+// l:=0,r:=6
+// tem
+// for l<r{
+
+// }
+// []int
+func TestGetMaxAcc(t *testing.T) {
+	logs2 := [][]string{
+		{"300", "user_1", "resource_1"},
+		{"599", "user_1", "resource_1"},
+		{"900", "user_1", "resource_3"},
+		{"1199", "user_1", "resource_3"},
+		{"1200", "user_1", "resource_3"},
+		{"1201", "user_1", "resource_1"},
+		{"1202", "user_1", "resource_1"},
+	}
+	fmt.Println(getMaxAcc(logs2))
+}
+func getMaxAcc(log [][]string) (string, int) {
+	resMap := make(map[string][]int)
+	for i := 0; i < len(log); i++ {
+		if len(log[i]) < 3 {
+			continue
+		}
+		re := log[i][2]
+		tim, _ := strconv.Atoi(log[i][0])
+		if _, ok := resMap[re]; !ok {
+			resMap[re] = []int{tim}
+			continue
+		}
+		resMap[re] = append(resMap[re], tim)
+	}
+	final_resource_count := make(map[string]int)
+	for name, res := range resMap {
+		sort.Ints(res)
+		fmt.Println(name, res)
+		final_resource_count[name] = 0
+		//resource_3:[300,599,900,1199,1200,1201,1202]
+		for i := 0; i < len(res); i++ {
+			count := 0
+			for j := i; j < len(res); j++ {
+				if res[j]-res[i] > 5*60 {
+					break
+				}
+				count++
+			}
+			if count > final_resource_count[name] {
+				final_resource_count[name] = count
+			}
+		}
+	}
+	//compare final_resource_count and get the final resource and count
+	final_resource, final_count := "", 0
+	for k, v := range final_resource_count {
+		if v > final_count {
+			final_resource = k
+			final_count = v
+		}
+	}
+	return final_resource, final_count
 }
