@@ -2,6 +2,7 @@ package play_with_list
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -355,4 +356,15 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	res := reverseKGroup(tem, k)
 	arr[0].Next = res
 	return arr[k-1]
+}
+
+func TestReverse(t *testing.T) {
+	a := []int{3, 2, 5}
+	sort.Sort(sort.Reverse(sort.IntSlice(a)))
+	fmt.Println(a)
+	b := []int{3, 2, 5}
+	sort.Slice(b, func(i, j int) bool {
+		return b[i] > b[j]
+	})
+	fmt.Println(b)
 }
