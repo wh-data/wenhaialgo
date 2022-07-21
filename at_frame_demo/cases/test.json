@@ -1,0 +1,42 @@
+{
+  "get_cases": [
+    {
+      "type":"get",
+      "name": "valid user id",
+      "request": {
+        "id": 111,
+        "offset": 0
+      },
+      "response": {
+        "error_code": 0,
+        "total_count": 1
+      }
+    },
+    {
+      "type":"get",
+      "name": "invalid user id",
+      "request": {
+        "id": 1112,
+        "offset": 10
+      },
+      "response": {
+        "error_code": 20,
+        "total_count": 11
+      }
+    }
+  ],
+  "update_cases": [
+    {
+      "type":"update",
+      "name": "valid user id",
+      "request": {
+        "id": 112,
+        "offset": 1
+      },
+      "response": {
+        "error_code": 0,
+        "total_count": 1
+      }
+    }
+  ]
+}
