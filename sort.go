@@ -4,8 +4,8 @@ import (
 	"fmt"
 )
 
-//time complexity O(nlogn)
-//space complexity O(1), in Swap need create a new number
+// time complexity O(nlogn)
+// space complexity O(1), in Swap need create a new number
 func HeapSort(arr []int, asc bool) {
 	if asc {
 		for i := 0; i < len(arr); i++ {
@@ -51,8 +51,8 @@ func HeapSortV2_forloop(arr []int) {
 	}
 }
 
-//time complexity:average O(nlogn)
-//space complexity: O(1)
+// time complexity:average O(nlogn)
+// space complexity: O(1)
 func QuickSort(arr []int, asc bool) {
 	if asc {
 		quickSortByAsc(arr, 0, len(arr)-1)
@@ -62,101 +62,74 @@ func QuickSort(arr []int, asc bool) {
 }
 
 func quickSortByAsc(arr []int, l, r int) {
-	pivot := quickSortDivideAsc(arr, l, r)
-	//left side
-	if pivot > l {
-		quickSortByAsc(arr, l, pivot-1)
+	if l < 0 {
+		return
 	}
-	//right side
-	if pivot < r {
-		quickSortByAsc(arr, pivot+1, r)
+	if r >= len(arr) {
+		return
 	}
-}
-
-func quickSortByDec(arr []int, l, r int) {
-	pivot := quickSortDivideDec(arr, l, r)
-	//left side
-	if pivot > l {
-		quickSortByDec(arr, l, pivot-1)
-	}
-	//right side
-	if pivot < r {
-		quickSortByDec(arr, pivot+1, r)
-	}
-}
-
-func quickSortDivideAsc(arr []int, l, r int) int {
-	tem := l
-	l++
-	for l <= r {
-		if arr[l] >= arr[tem] {
-			for l <= r {
-				if arr[r] < arr[tem] {
-					Swap(arr, l, r)
-					l++
-					r--
-					break
-				} else {
-					r--
-				}
-			}
-		} else {
-			l++
-		}
-	}
-	//r is the smaller one, r can smaller than l
-	Swap(arr, tem, r)
-	return r
-}
-
-func quickSortDivideDec(arr []int, l, r int) int {
-	tem := l
-	l++
-	for l <= r {
-		if arr[l] <= arr[tem] {
-			for l <= r {
-				if arr[r] > arr[tem] {
-					Swap(arr, l, r)
-					r--
-					l++
-					break
-				} else {
-					r--
-				}
-			}
-		} else {
-			l++
-		}
-	}
-	Swap(arr, tem, r)
-	return r
-}
-
-func quickSortV2(arr []int, l, r int) {
 	if l >= r {
 		return
 	}
-	oriR := r
-	oriL := l
+	ori_l := l
+	ori_r := r
 	p := arr[l]
-	for r > l {
-		if arr[r] < p {
-			for r > l {
-				if arr[l] >= p {
+	for l < r {
+		l++
+		if arr[l] > p {
+			for l < r {
+				if arr[r] <= p {
 					arr[l], arr[r] = arr[r], arr[l]
+					r--
+					break
 				}
-				l++
+				r--
 			}
 		}
-		r--
 	}
-	quickSortV2(arr, r+1, oriR)
-	quickSortV2(arr, oriL, r)
+	if arr[r] < p {
+		arr[ori_l], arr[r] = arr[r], arr[ori_l]
+	}
+	quickSortByAsc(arr, ori_l, r-1)
+	quickSortByAsc(arr, r, ori_r)
 }
 
-//key point: bubble sort is to adjust adjacent elements, if no change, mean all are sorted. can stop further check
-//time complexity: average O(n^2), can be simpler then GeneralSort in some case
-//space complexity: O(1)
+func quickSortByDec(arr []int, l, r int) {
+	if l < 0 {
+		return
+	}
+	if r >= len(arr) {
+		return
+	}
+	if l >= r {
+		return
+	}
+	ori_l := l
+	ori_r := r
+	p := arr[l]
+	for l < r {
+		l++
+		if arr[l] < p {
+			for l < r {
+				if arr[r] >= p {
+					arr[l], arr[r] = arr[r], arr[l]
+					r--
+					break
+				}
+				r--
+			}
+		}
+	}
+	if arr[r] >= p {
+		arr[ori_l], arr[r] = arr[r], arr[ori_l]
+	}
+	quickSortByDec(arr, ori_l, r-1)
+	quickSortByDec(arr, r, ori_r)
+}
+
+// key point: bubble sort is to adjust adjacent elements, if no change, mean all are sorted. can stop further check
+// time complexity: average O(n^2), can be simpler then GeneralSort in some case
+// space complexity: O(1)
 func BubbleSort(arr []int, asc bool) {
 	//count := 0 //for checking time complexity
 	if len(arr) < 2 {
@@ -278,7 +251,7 @@ func BubbleSortFloat32(arr []float32, asc bool) {
 	//fmt.Println(count)
 }
 
-//time complexity: always O(n(n+1)/2)
+// time complexity: always O(n(n+1)/2)
 func GeneralSort(arr []int, asc bool) {
 	count := 0 //for checking time complexity
 	if len(arr) < 2 {
@@ -301,10 +274,10 @@ func GeneralSort(arr []int, asc bool) {
 	fmt.Println(count)
 }
 
-//key point: the left part is sorted, pick ele and compare with sorted part,
-//as long as found a ele that satisfy condition, can stop further check
-//time complexity O(N)~O(N(N-1)/2)
-//space complexity O(1)
+// key point: the left part is sorted, pick ele and compare with sorted part,
+// as long as found a ele that satisfy condition, can stop further check
+// time complexity O(N)~O(N(N-1)/2)
+// space complexity O(1)
 func InsertSort(arr []int, asc bool) {
 	if asc {
 		insertSortAsc(arr)
@@ -340,8 +313,8 @@ func insertSortDec(arr []int) {
 	}
 }
 
-//time complexity O(N+N*(logN-logM))
-//space complexity O(max - min ), max and min are the number in the array
+// time complexity O(N+N*(logN-logM))
+// space complexity O(max - min ), max and min are the number in the array
 func BucketSort(arr []int, asc bool, bucketSize int) {
 	if bucketSize < 1 {
 		bucketSize = 10

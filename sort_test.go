@@ -9,9 +9,15 @@ func TestSortByHeap(t *testing.T) {
 	//arr := []int{8, 9, 5, 2, 1, 4, 7, 23, 34, 33, 11, 80, 90, 50, 20, 10, 40, 70, 230, 340, 330, 110, 2300, 3400, 3300}
 	//HeapSortV2_forloop(arr)
 	//fmt.Println(arr)
-	arr := []int{8, 9, 5, 10, 1}
-	quickSortV2(arr, 0, len(arr)-1)
-	fmt.Println(arr)
+	arr := []int{8, 9, 8, 8, 5, 10, 1}
+	arr1 := make([]int, len(arr))
+	copy(arr1, arr)
+	fmt.Println("old arr:  ", arr)
+	quickSortByDec(arr, 0, len(arr)-1)
+	fmt.Println("new arr:  ", arr)
+	fmt.Println("old arr1:  ", arr1)
+	quickSortByAsc(arr1, 0, len(arr1)-1)
+	fmt.Println("new arr1:  ", arr1)
 	//arr = []int{8, 9, 5, 2, 1, 4, 7}
 	//HeapSort(arr, true)
 	//fmt.Println(arr)
@@ -37,7 +43,7 @@ func TestQuickSort(t *testing.T) {
 
 func TestQuickSortDivide(t *testing.T) {
 	arr := []int{4, 5, 7}
-	quickSortDivideAsc(arr, 0, len(arr)-1)
+	quickSortByDec(arr, 0, len(arr)-1)
 	fmt.Println(arr)
 }
 
