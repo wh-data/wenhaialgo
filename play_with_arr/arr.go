@@ -1,9 +1,47 @@
 package play_with_arr
 
-import "fmt"
+import (
+	"fmt"
+)
 
-//有序的数组
-//找到所对应值所在的index
+// 1,-1,2
+func ttt(arr []int) int {
+	return 0
+}
+
+func longestConsecutive(nums []int) int {
+	mp := make(map[int]int, 0)
+	for _, v := range nums {
+		if _, ok := mp[v]; !ok {
+			left := 0
+			right := 0
+			if _, ok := mp[v-1]; ok {
+				left = mp[v-1]
+			}
+			if _, ok := mp[v+1]; ok {
+				right = mp[v+1]
+			}
+			mp[v] = 1 + left + right
+			mp[v-left] = mp[v] //边界也重新设值
+			mp[v+right] = mp[v]
+			fmt.Println(v-left, mp[v-left])
+			fmt.Println(v+right, mp[v+right])
+			fmt.Println("===============")
+		}
+
+	}
+	longest := 0
+	for _, v := range mp {
+		if v > longest {
+			longest = v
+		}
+	}
+
+	return longest
+}
+
+// 有序的数组
+// 找到所对应值所在的index
 func FindIndex(arr []int, val int) int {
 	lt := len(arr)
 	return findIndex(arr, val, 0, lt-1)
@@ -29,7 +67,7 @@ func findIndex(arr []int, val int, l, r int) int {
 	return -1
 }
 
-//从数组移除某个值
+// 从数组移除某个值
 func remove_ele(arr []int, val int) int {
 	fast, slow := 0, -1
 	l := len(arr)
@@ -46,7 +84,7 @@ func remove_ele(arr []int, val int) int {
 	return slow + 1
 }
 
-//最短的window，相加和>=s
+// 最短的window，相加和>=s
 func add_on(arr []int, s int) int {
 	fast, slow := 0, 0
 	res := len(arr) + 1
@@ -81,7 +119,7 @@ func add_on(arr []int, s int) int {
 	return res
 }
 
-//n is positive integer
+// n is positive integer
 func Spiral_Matrix(n int) [][]int {
 	matrix := make([][]int, n)
 	for i, _ := range matrix {

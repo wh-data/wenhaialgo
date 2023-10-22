@@ -9,6 +9,11 @@ import (
 	"testing"
 )
 
+func Test_longestConsecutive(t *testing.T) {
+	nums := []int{0, 3, 7, 2, 5, 8, 4, 6, 0, 1}
+	longestConsecutive(nums)
+}
+
 func TestARR(t *testing.T) {
 	arr := []int{1, 2}
 	fmt.Println(FindIndex(arr, 2))
@@ -107,8 +112,8 @@ func TestSup(t *testing.T) {
 	}
 }
 
-//find the longest same charactor sub string
-//e.g: input aabbbaaaa--> output: a,4
+// find the longest same charactor sub string
+// e.g: input aabbbaaaa--> output: a,4
 func TestLongSub_sliding_window(t *testing.T) {
 	str := "aabbbbbbaaaaa"
 	arr := []rune(str)
@@ -140,7 +145,7 @@ func TestLongSub_sliding_window(t *testing.T) {
 	fmt.Println(max)
 }
 
-//find sum of two numbs
+// find sum of two numbs
 func twoSum(nums []int, target int) []int {
 	mymap := make(map[int]int, 0)
 	length := len(nums)
@@ -373,7 +378,7 @@ func TestIsMatch(t *testing.T) {
 	fmt.Println(isMatch(s, p))
 }
 
-//todo: the algo is not finished, direction is correct
+// todo: the algo is not finished, direction is correct
 func isMatch(s string, p string) bool {
 	arr_s := []rune(s)
 	arr_p := []rune(p)
@@ -792,7 +797,7 @@ Constraints:
 haystack and needle consist of only lowercase English characters.
 */
 
-//sliding wingdow, O(N)
+// sliding wingdow, O(N)
 func strStr(haystack string, needle string) int {
 	arr_h := []rune(haystack)
 	arr_n := []rune(needle)

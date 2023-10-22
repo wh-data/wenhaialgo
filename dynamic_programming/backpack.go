@@ -6,8 +6,8 @@ import (
 	"sort"
 )
 
-//Greedy: is not always the best solution
-//e.g w := []int{1, 2, 5, 6, 7}, v := []int{1, 6, 18, 22, 28}, c := 11
+// Greedy: is not always the best solution
+// e.g w := []int{1, 2, 5, 6, 7}, v := []int{1, 6, 18, 22, 28}, c := 11
 func BackpackIssueByGreedyAlgo(capacity int, weight, value []int) (chosenWeight, chosenValue []int, totalWeight, totalValue int) {
 	if len(value) != len(weight) {
 		return nil, nil, 0, 0
@@ -98,85 +98,61 @@ func BackpackIssueByBackTrackAlgo(articleIndex, capacity int, articles []Article
 	}
 }
 
-//dynamic programming
-//refer https://www.jianshu.com/p/c289cd8ae0ed
-//todo: check the algo
-func BackpackIssueByDPV2(nums [][]int, total int) int {
-	dp := make([]int, total+1)
-	for i := 0; i < len(nums); i++ {
-		for j := nums[i][0]; j <= total; j++ {
-			if dp[j-nums[i][0]+nums[i][1]] > dp[j] {
-				dp[j] = dp[j-nums[i][0]+nums[i][1]]
-			}
-		}
-	}
-	return dp[total]
-}
+func BackpackIssueByDP(wt, val []int, capacity int) (highestVal int) {
+	//二维数组解释
+	/*
+		i表示前i个物品,对应背包容量从0到capacity的最优解
+		j表示当背包容量为j时候，对应从0到n个物品的最优解
+	*/
 
-//todo: bug fix
-func BackpackIssueByDP(wt, val []int, size int) int {
-	dp := make([][]int, len(wt))
+	//对前i个item开始分析
+	/*
+		有3中情况：
+		1.这个物品重量大于背包的最大容量，则这个物品永远不可能放进背包，则最优解就是不放这个物品
+		2.当可以放进去的时候，有两种情况：选择其中最优解释最大的
+			2.1. 放进去后前i个的最优解变小，
+			2.2. 放进去后前i个的最优解变大
+	*/
+
+	//实例解释
+	/*
+		假设capacity = j；尝试前i个物品的最优解：
+		1. wt[i]>capacity: 第i个物品永远不可能放进去，最优解就是继续保留j的容量，存i-1个物品的最优解；
+		2. wt[i]<=capacity:前i个物品的最优解是两种可能中值较大的一个
+			2.1. 放的最优解：val[i] + 容量减少wt[i]后对前i-1个物品的最优解
+			2.2. 不放的最优解：保留容量j，对前i-1个物品的最优解
+	*/
+
+	itemCount := len(wt)
+	//exceptedItems = []int{}
+	dp := make([][]int, itemCount+1)
 	for i := range dp {
-		dp[i] = make([]int, size)
+		dp[i] = make([]int, capacity+1)
 	}
-	for i := 0; i < len(wt); i++ {
+	newwt, newval := []int{}, []int{}
+	newwt = append(newwt, 0)
+	newwt = append(newwt, wt...)
+	newval = append(newval, 0)
+	newval = append(newval, val...)
+	//初始化：当前0个物品（没有放物品）时候，无论背包容量多少，价值都是0
+	for i := 0; i <= len(wt); i++ {
 		dp[i][0] = 0
 	}
-	for j := 0; j < size; j++ {
+	//初始化：当背包容量为0，无论到前几个物品，价值都是0
+	for j := 0; j <= capacity; j++ {
 		dp[0][j] = 0
 	}
-	for i := 1; i <= len(wt); i++ {
-		for j := 1; j <= size; j++ {
-			if wt[i] > size {
-				dp[i][size] = dp[i-1][size]
-			} else {
-				dp[i][size] = int(math.Max(float64(dp[i-1][size]), float64(dp[i-1][size-wt[i]]+val[i])))
-			}
-		}
-	}
-	return dp[len(wt)][size]
-}
-
-/*画表格分析会简单很多
-
-        1	2	3	4	5	6	7	8	9	10	11	12	13	14	15
-{5, 12}	0	0	0	0	12	12	12	12	12	12	12	12	12	12	12
-{4, 3}	0	0	0	3	12	12	12	12	15	15	15	15	15	15	15
-{7, 10}	0	0	0	3	12	12	12	12	15	15	15	22	22	22	22
-{2, 3}	0	3	3	3	12	12	15	15	15	15	18	22	22	25	25
-{6, 6}	0	3	3	3	12	12	15	15	15	15	18	22	22	25	25
-————————————————
-版权声明：本文为CSDN博主「雪zi」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/LemonGirls/article/details/83378980
-*/
-
-//precondition: w length equal v length
-func Back_pack_v3(w, v []int, c int) int {
-	n := len(w)
-	if n != len(v) || n == 0 {
-		return 0
-	}
-	//init 2 dimension arr with 0
-	dp := make([][]int, n)
-	for i := 0; i < n; i++ {
-		dp[i] = make([]int, c+1)
-	}
-	//init first line
-	for j := w[0]; j <= c; j++ {
-		dp[0][j] = v[0]
-	}
-	//可顺序放，概念是如果放比较某一个容量情况下放能增值还是不放（放之前的case）值比较大
-	for i := 1; i < n; i++ {
-		for j := 0; j <= c; j++ {
-			//dp[i-1][j-w[i]]这个是理解的关键，表示当放第i个物品时，j-w[i]的空间时候的最大值加上第i个物品的值
-			//例如总空间是15，当我放质量为7的物品时候，最大的价值是：（15-7=8）的空间的时候的最大价值加上本物品的价值
-			if j-w[i] >= 0 {
-				dp[i][j] = int(math.Max(float64(dp[i-1][j]), float64(dp[i-1][j-w[i]]+v[i])))
-			} else {
+	for i := 1; i <= itemCount; i++ {
+		for j := 1; j <= capacity; j++ {
+			if newwt[i] > j { //如果当前物品重量大于当前背包的容量，最优解肯定是不放该物品
 				dp[i][j] = dp[i-1][j]
+				//exceptedItems = append(exceptedItems,i)
+			} else {
+				l := float64(dp[i-1][j])
+				r := float64(dp[i-1][j-newwt[i]] + newval[i])
+				dp[i][j] = int(math.Max(l, r))
 			}
-
 		}
 	}
-	return dp[n-1][c]
+	return dp[itemCount][capacity]
 }

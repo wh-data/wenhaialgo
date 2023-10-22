@@ -50,10 +50,10 @@ func TestBackpack(Z *testing.T) {
 }
 
 func TestBackpackDP(Z *testing.T) {
-	wt := []int{1, 2, 5, 6, 7}
-	val := []int{1, 6, 18, 22, 28}
-	c := 11
-	BackpackIssueByDP(wt, val, c)
+	wt := []int{100, 77, 22, 29, 50, 99}
+	val := []int{5, 92, 22, 87, 46, 90}
+	c := 100
+	fmt.Println(BackpackIssueByDP(wt, val, c))
 }
 
 func TestBB(t *testing.T) {
@@ -82,7 +82,7 @@ func TestNMPath(t *testing.T) {
 	fmt.Println(n_m_path(4, 3))
 }
 
-//testing cases in 牛客
+// testing cases in 牛客
 func TestBback_pack_v3(t *testing.T) {
 	c := 2169 //8466
 	w := make([]int, 0)
@@ -275,5 +275,5 @@ func TestBback_pack_v3(t *testing.T) {
 	fmt.Println(len(lines))
 	fmt.Println(w)
 	fmt.Println(v)
-	fmt.Println(Back_pack_v3(w, v, c))
+	fmt.Println(BackpackIssueByDP(w, v, c))
 }
